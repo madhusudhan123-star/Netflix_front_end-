@@ -5,6 +5,7 @@ import { Cross2Icon } from '@radix-ui/react-icons';
 import Cards from '../components/Cards';
 import List_cards from '../components/List_cards';
 import NavBar from '../components/NavBar';
+import LoadingSpinner from '../components/Loading';
 
 const ProfileDetails = () => {
   const [user, setUser] = useState({
@@ -17,7 +18,7 @@ const ProfileDetails = () => {
   const [password, setPassword] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchUserDetails();
   }, []);
@@ -30,11 +31,14 @@ const ProfileDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.get('https://netflix-backend-code.onrender.com/api/userdetail', config);
+      setLoading(true);
+      const response = await axios.get('http://localhost:8000/api/userdetail', config);
       setUser(response.data);
       setName(response.data.name);
       setEmail(response.data.email);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('Error fetching user details:', error);
     }
   };
@@ -55,15 +59,18 @@ const ProfileDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.put('https://netflix-backend-code.onrender.com/api/userdetail', {
+      setLoading(true);
+      const response = await axios.put('http://localhost:8000/api/userdetail', {
         name,
         email,
         password,
       }, config);
       console.log(response.data);
       setIsOpen(false);
-      fetchUserDetails();  // Refresh user data
+      fetchUserDetails();
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error('Error updating user details:', error);
       setErrorMessage('Error updating profile. Please try again.');
     }
@@ -73,6 +80,7 @@ const ProfileDetails = () => {
     <div>
       <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center">
         <NavBar />
+        {loading && <LoadingSpinner/>}
         <div className="max-w-md w-full">
           <div className="flex flex-col items-center mb-8 mt-20">
             <h2 className="text-3xl font-bold">{user.name}</h2>

@@ -14,7 +14,7 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('https://netflix-backend-code.onrender.com/api/logout');
+      await axios.post('http://localhost:8000/api/logout');
       // Assuming the logout was successful, navigate to the home page
       navigate('/');
     } catch (error) {

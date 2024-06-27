@@ -15,6 +15,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
+        
           <Routes>
             <Route path='/' element={<Home />}  />
             <Route path='/sign_start' element={<Signup_start />}  />

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingSpinner from '../../components/Loading';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     // Check if the token exists in localStorage and if it's still valid
     const token = localStorage.getItem('token');
@@ -23,31 +26,32 @@ const Login = () => {
       }
     }
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    setLoading(true);
     try {
-      const response = await axios.post('https://netflix-backend-code.onrender.com/api/login', {email,password});
-
-      console.log(response.data.token);
-
+      // https://netflix-backend-code.onrender.com
+      const response = await axios.post('http://localhost:8000/api/login', {email, password});
+  
       const token = response.data.token;
       axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
-
+  
       const expirationTime = new Date().getTime() + 7 * 24 * 60 * 60 * 1000;
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', token); 
       localStorage.setItem('expirationTime', expirationTime);
-
-      setSuccessMessage(response.data.message);
-      navigate('/home');
-
+      setLoading(false);
       setEmail('');
       setPassword('');
+      if (response.status === 200) {
+        toast.success(`${response.data.message} wait to close this one`, {
+          onClose: () => navigate('/home')
+        });
+      }
     } catch (error) {
+      setLoading(false);
       console.error(error);
-      setErrorMessage('Login failed. Please check your credentials.');
+      toast.error('Login failed. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +60,7 @@ const Login = () => {
 
   return (
     <div>
+      {loading && <LoadingSpinner />} 
       <div className='bg-black'>
         <div style={{ height: "100vh" }} className="text-white bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/51c1d7f7-3179-4a55-93d9-704722898999/be90e543-c951-40d0-9ef5-e067f3e33d16/IN-en-20240610-popsignuptwoweeks-perspective_alpha_website_medium.jpg')]">
           <div className="bg-custom-gradient">
@@ -73,7 +78,7 @@ const Login = () => {
                 </div>
                 <div>
                   <button style={{ backgroundColor: "red" }} className="btn btn-primary px-3 py-1 rounded-md">
-                    <Link to="/home/signup">Sign In </Link>
+                    <Link to="/home/signup">Sign Up </Link>
                   </button>
                 </div>
               </nav>
@@ -118,19 +123,8 @@ const Login = () => {
                       />
                     </div>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <input
-                          id="remember_me"
-                          name="remember_me"
-                          type="checkbox"
-                          className="w-4 h-4 text-red-600 bg-gray-900 border-gray-600 rounded focus:ring-red-500"
-                        />
-                        <label htmlFor="remember_me" className="ml-2 text-sm text-gray-300">
-                          Remember me
-                        </label>
-                      </div>
                       <div className="text-sm">
-                        <Link to="#" className="font-medium text-gray-300 hover:text-white">
+                        <Link to="https://help.netflix.com/en" className="font-medium text-gray-300 hover:text-white">
                           Need help?
                         </Link>
                       </div>
@@ -149,11 +143,7 @@ const Login = () => {
                       {errorMessage}
                     </div>
                   )}
-                  {successMessage && (
-                    <div className="mt-4 text-sm text-green-500">
-                      {successMessage}
-                    </div>
-                  )}
+
                   <div className="flex justify-between mt-6 text-sm text-gray-300">
                     <p>New to Netflix?</p>
                     <Link to="/home/signup" className="font-medium text-white hover:underline">
@@ -173,6 +163,7 @@ const Login = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
         <footer className="bg-black py-8 mt-20 text-white">
           <div className="container mx-auto px-4 text-white">
             <div className="flex flex-col md:flex-row text-white justify-between items-center mb-4">

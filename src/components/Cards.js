@@ -20,10 +20,15 @@ const Cards = ({ data, type }) => {
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
   };
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
   return (
     <div 
-      className="relative w-64 h-[15rem] rounded-lg overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:z-10"
+      className="relative w-96 h-[15rem]  overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:z-10"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -31,7 +36,7 @@ const Cards = ({ data, type }) => {
         <img
           src={`https://image.tmdb.org/t/p/w500${data.poster_path}`}
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover rounded-none"
         />
       ) : (
         <div className="w-full h-full bg-gray-300 flex items-center justify-center">
@@ -56,6 +61,7 @@ const Cards = ({ data, type }) => {
                   to="/Play" 
                   state={{ movieData: data }}
                   className="flex items-center justify-center w-full h-full"
+                  onClick={scrollToTop}
                 >
                   <FaPlay />
                 </Link>
