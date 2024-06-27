@@ -38,15 +38,15 @@ const Homes = () => {
     
         // Fetch popular and top rated TV shows
         const [popularTVShowsRes, topTVShowsRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/tvshow/popular', config),
-          axios.get('http://localhost:8000/api/tvshow/top', config)
+          axios.get('https://netflix-backend-code.onrender.com/api/tvshow/popular', config),
+          axios.get('https://netflix-backend-code.onrender.com/api/tvshow/top', config)
         ]);
         setPopularTVShows(popularTVShowsRes.data);
         setTopTVShows(topTVShowsRes.data);
     
         // Fetch TV shows for each genre
         const genrePromises = Object.keys(genreMap).map(genre => {
-          const url = `http://localhost:8000/api/tv/${genre}`;
+          const url = `https://netflix-backend-code.onrender.com/api/tv/${genre}`;
           console.log(`Fetching TV shows for genre ${genre} from: ${url}`);
           return axios.get(url, config);
         });

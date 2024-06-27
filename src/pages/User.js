@@ -32,7 +32,7 @@ const ProfileDetails = () => {
         },
       };
       setLoading(true);
-      const response = await axios.get('http://localhost:8000/api/userdetail', config);
+      const response = await axios.get('https://netflix-backend-code.onrender.com/api/userdetail', config);
       setUser(response.data);
       setName(response.data.name);
       setEmail(response.data.email);
@@ -60,7 +60,7 @@ const ProfileDetails = () => {
         },
       };
       setLoading(true);
-      const response = await axios.put('http://localhost:8000/api/userdetail', {
+      const response = await axios.put('https://netflix-backend-code.onrender.com/api/userdetail', {
         name,
         email,
         password,

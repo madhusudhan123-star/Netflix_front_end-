@@ -32,7 +32,7 @@ const Login = () => {
     setLoading(true);
     try {
       // https://netflix-backend-code.onrender.com
-      const response = await axios.post('http://localhost:8000/api/login', {email, password});
+      const response = await axios.post('https://netflix-backend-code.onrender.com/api/login', {email, password});
   
       const token = response.data.token;
       axios.defaults.headers.common['authorization'] = `Bearer ${token}`;

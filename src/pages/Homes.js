@@ -56,10 +56,10 @@ const Homes = () => {
           popularTVShowsRes,
           topTVShowsRes
         ] = await Promise.all([
-          axios.get('http://localhost:8000/api/movies/popular', config),
-          axios.get('http://localhost:8000/api/movies/top', config),
-          axios.get('http://localhost:8000/api/tvshow/popular', config),
-          axios.get('http://localhost:8000/api/tvshow/top', config)
+          axios.get('https://netflix-backend-code.onrender.com/api/movies/popular', config),
+          axios.get('https://netflix-backend-code.onrender.com/api/movies/top', config),
+          axios.get('https://netflix-backend-code.onrender.com/api/tvshow/popular', config),
+          axios.get('https://netflix-backend-code.onrender.com/api/tvshow/top', config)
         ]);
 
         setPopularMovies(popularMoviesRes.data);
@@ -69,7 +69,7 @@ const Homes = () => {
 
         // Fetch movies for each genre
         const genrePromises = Object.keys(genreMap).map(genre => 
-          axios.get(`http://localhost:8000/api/movies/${genre}`, config)
+          axios.get(`https://netflix-backend-code.onrender.com/api/movies/${genre}`, config)
         );
 
         const genreResponses = await Promise.all(genrePromises);

@@ -37,8 +37,8 @@ const Play = () => {
           popularMoviesRes,
           topMoviesRes,
         ] = await Promise.all([
-          axios.get(`http://localhost:8000/api/${mediaType}/popular`, config),
-          axios.get(`http://localhost:8000/api/${mediaType}/top`, config)
+          axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/popular`, config),
+          axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/top`, config)
         ]);
 
         setPopularMovies(popularMoviesRes.data);
@@ -81,7 +81,7 @@ const Play = () => {
                 }
             };
             const mediaType = movieData.first_air_date ? 'tv' : 'movie'; // Determine if it's a TV show or movie
-            const res = await axios.get(`http://localhost:8000/api/${mediaType}/${movieData.id}/trailers`, config);
+            const res = await axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/${movieData.id}/trailers`, config);
             if (res.data && res.data.length > 0) {
                 setTrailerKey(res.data[0].key); // Use the first trailer
                 setIsPlaying(true);

@@ -23,7 +23,7 @@ const Search = () => {
         },
       };
       
-      const response = await axios.post(`http://localhost:8000/api/search?query=${searchTerm}`, config);
+      const response = await axios.post(`https://netflix-backend-code.onrender.com/api/search?query=${searchTerm}`, config);
       setSearchResults(response.data);
     } catch (error) {
       console.error('Error searching:', error);
