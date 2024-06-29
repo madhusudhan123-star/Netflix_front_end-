@@ -10,17 +10,9 @@ import Search from './pages/Search';
 import Play_vid from './pages/Play_vid';
 import Movies from './pages/Movies';
 import Tvshows from './pages/Tvshows';
-import SEOComponent from './components/SEOComponent';
-
 function App() {
   return (
     <div>
-      <SEOComponent 
-        title="Home Page"
-        description="Welcome to our website"
-        keywords="Neflix, moviesnetflix, netflix"
-        canonicalUrl="https://netflix-front-end-git-main-madhusudhan123stars-projects.vercel.app/"
-      />
       <BrowserRouter>
           <Routes>
             <Route path='/' element={<Home />}  />
