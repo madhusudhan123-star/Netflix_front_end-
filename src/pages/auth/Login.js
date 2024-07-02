@@ -173,14 +173,14 @@ const Login = () => {
                 </p>
               </div>
               <div className="flex space-x-4">
-                <Link to="#" className="text-gray-400 underline">FAQ</Link>
-                <Link to="#" className="text-gray-400 underline">Cookie Preferences</Link>
+                <a href="https://help.netflix.com/support/412" className="text-gray-400 underline mb-2">FAQ</a>
+                <a href="https://www.netflix.com/cookiePreferences" className="text-gray-400 underline mb-2">Cookie Preferences</a>
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="flex space-x-4 mb-4 md:mb-0">
-                <Link to="#" className="text-gray-400 underline">Gift Card Terms</Link>
-                <Link to="#" className="text-gray-400 underline">Legal Notices</Link>
+                <a href="https://www.netflix.com/gift-cards" className="text-gray-400 underline mb-2">Gift Card Terms</a>
+                <a href="https://help.netflix.com/legal/termsofuse" className="text-gray-400 underline mb-2">Legal Notices</a>
               </div>
             </div>
           </div>

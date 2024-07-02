@@ -15,6 +15,7 @@ const Play = () => {
     const [topMovies, setTopMovies] = useState([]);
     const location = useLocation();
     const movieData = location.state?.movieData;
+    console.log(movieData.id);
     const genra_list = {
         28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy",
         80: "Crime", 99: "Documentary", 18: "Drama", 10751: "Family",

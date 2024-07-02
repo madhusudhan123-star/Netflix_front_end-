@@ -6,6 +6,9 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingSpinner from '../../components/Loading';
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
@@ -59,7 +62,30 @@ const SignUpForm = () => {
     }
     setLoading(false);
   };
+  const handleGoogleSignUpSuccess = async (credentialResponse) => {
+    setLoading(true);
+    try {
+      const response = await axios.post('https://netflix-backend-code.onrender.com/api/google-signup', {
+        credential: credentialResponse.credential,
+      });
 
+      setIsOpen(false);
+      if (response.status === 200) {
+        toast.success(response.data.message, {
+          onClose: () => {
+            navigate('/login');
+          }
+        });
+      }
+    } catch (error) {
+      toast.error('Google Sign-Up failed');
+    }
+    setLoading(false);
+  };
+  // const handleGoogleLogin = () => {
+  //   window.location.href = "http://localhost:8000/api/auth/google";
+
+  // };
   return (
     <div className='bg-black'>
      {loading && <LoadingSpinner />} {/* Show loading spinner if loading */}
@@ -157,6 +183,9 @@ const SignUpForm = () => {
                           Sign Up
                         </button>
                       </form>
+                      <div className="mt-4">
+                      {/* <button onClick={handleGoogleLogin}>Google</button> */}
+                      </div>
                       <Dialog.Close className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
                         <Cross2Icon />
                       </Dialog.Close>
@@ -178,14 +207,16 @@ const SignUpForm = () => {
               </p>
             </div>
             <div className="flex space-x-4">
-              <Link to="#" className="text-gray-400 underline">FAQ</Link>
-              <Link to="#" className="text-gray-400 underline">Cookie Preferences</Link>
+            <div className="flex flex-wrap justify-center space-x-4">
+    </div>
+              <a href="https://help.netflix.com/support/412" className="text-gray-400 underline mb-2">FAQ</a>
+              <a href="https://www.netflix.com/cookiePreferences" className="text-gray-400 underline mb-2">Cookie Preferences</a>
             </div>
           </div>
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex space-x-4 mb-4 md:mb-0">
-              <Link to="#" className="text-gray-400 underline">Gift Card Terms</Link>
-              <Link to="#" className="text-gray-400 underline">Legal Notices</Link>
+              <a href="https://www.netflix.com/gift-cards" className="text-gray-400 underline mb-2">Gift Card Terms</a>
+              <a href="https://help.netflix.com/legal/termsofuse" className="text-gray-400 underline mb-2">Legal Notices</a>
             </div>
           </div>
         </div>
@@ -195,3 +226,4 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
+
