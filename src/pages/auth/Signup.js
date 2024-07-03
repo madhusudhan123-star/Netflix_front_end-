@@ -53,6 +53,8 @@ const SignUpForm = () => {
             navigate('/login'); // Use a function body to navigate
           }
         });
+      }else{
+        toast.error(response.data.message);
       }
     } catch (error) {
       // Handle registration error
