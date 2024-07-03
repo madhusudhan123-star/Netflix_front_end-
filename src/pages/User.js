@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import Cards from '../components/Cards';
-import List_cards from '../components/List_cards';
 import NavBar from '../components/NavBar';
 import LoadingSpinner from '../components/Loading';
+import {REACT_APP_MAIN_URL} from '../config';
+
+
 
 const ProfileDetails = () => {
   const [user, setUser] = useState({
@@ -32,7 +33,7 @@ const ProfileDetails = () => {
         },
       };
       setLoading(true);
-      const response = await axios.get('https://netflix-backend-code.onrender.com/api/userdetail', config);
+      const response = await axios.get(`${REACT_APP_MAIN_URL}/userdetail`, config);
       setUser(response.data);
       setName(response.data.name);
       setEmail(response.data.email);
@@ -60,7 +61,7 @@ const ProfileDetails = () => {
         },
       };
       setLoading(true);
-      const response = await axios.put('https://netflix-backend-code.onrender.com/api/userdetail', {
+      const response = await axios.put(`${REACT_APP_MAIN_URL}/userdetail`, {
         name,
         email,
         password,
@@ -133,16 +134,6 @@ const ProfileDetails = () => {
                           required
                         />
                       </div>
-                      <div className="mb-6">
-                        <input
-                          id="password"
-                          type="password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="w-full px-4 py-2 bg-gray-700 rounded text-white"
-                          placeholder="Password (leave blank to keep unchanged)"
-                        />
-                      </div>
                       {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
                       <button
                         type="submit"
@@ -150,9 +141,6 @@ const ProfileDetails = () => {
                       >
                         Save Changes
                       </button>
-                      <p className="text-gray-400 text-sm">
-                        Password must be between 4 and 60 characters.
-                      </p>
                     </form>
                     <Dialog.Close className="absolute top-4 right-4 text-gray-500 hover:text-white">
                       <Cross2Icon />

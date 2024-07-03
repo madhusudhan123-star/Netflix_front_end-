@@ -10,6 +10,13 @@ import Search from './pages/Search';
 import Play_vid from './pages/Play_vid';
 import Movies from './pages/Movies';
 import Tvshows from './pages/Tvshows';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+
+
+
+
+
 function App() {
   return (
     <div>
@@ -25,6 +32,9 @@ function App() {
             <Route path='/Play' element={<Play_vid />} />
             <Route path='/movies' element={<Movies />} />
             <Route path='/tv-shows' element={<Tvshows />} />
+            <Route path='/forgotPassword' element={<ForgotPassword />} />
+            <Route path='/resetpassword/:id' element={<ResetPassword />} />
+            <Route path='*' element={<h1>Page Not Found</h1>} />
           </Routes>
       </BrowserRouter>
     </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import Cards from './Cards';
 
-const List_cards = ({ title, data, type }) => {
+const List_cards = ({ title, data, type, setLoading }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAtStart, setIsAtStart] = useState(true);
   const scrollRef = useRef(null);
@@ -24,6 +24,8 @@ const List_cards = ({ title, data, type }) => {
   useEffect(() => {
     if (data && data.length > 0) {
       setIsLoading(false);
+      setLoading(false)
+      
     }
   }, [data]);
 
@@ -54,7 +56,7 @@ const List_cards = ({ title, data, type }) => {
           onScroll={checkScrollPosition}
         >
           {isLoading ? (
-            <h1 className='text-3xl md:text-5xl text-white font-extrabold'>Loading...</h1>
+            <h1 className='text-3xl md:text-5xl text-white font-extrabold'></h1>
           ) : (
             data.map((item, i) => (
               <div key={i}><Cards data={item} type={type} /></div>

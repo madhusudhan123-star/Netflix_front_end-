@@ -6,9 +6,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingSpinner from '../../components/Loading';
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import {REACT_APP_MAIN_URL} from '../../config';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
@@ -41,7 +39,7 @@ const SignUpForm = () => {
     try {
       // Make a POST request to the backend endpoint
       // https://netflix-backend-code.onrender.com
-      const response = await axios.post('https://netflix-backend-code.onrender.com/api/register', {
+      const response = await axios.post(`${REACT_APP_MAIN_URL}/register`, {
         name,
         email,
         password,
@@ -62,30 +60,6 @@ const SignUpForm = () => {
     }
     setLoading(false);
   };
-  const handleGoogleSignUpSuccess = async (credentialResponse) => {
-    setLoading(true);
-    try {
-      const response = await axios.post('https://netflix-backend-code.onrender.com/api/google-signup', {
-        credential: credentialResponse.credential,
-      });
-
-      setIsOpen(false);
-      if (response.status === 200) {
-        toast.success(response.data.message, {
-          onClose: () => {
-            navigate('/login');
-          }
-        });
-      }
-    } catch (error) {
-      toast.error('Google Sign-Up failed');
-    }
-    setLoading(false);
-  };
-  // const handleGoogleLogin = () => {
-  //   window.location.href = "http://localhost:8000/api/auth/google";
-
-  // };
   return (
     <div className='bg-black'>
      {loading && <LoadingSpinner />} {/* Show loading spinner if loading */}
@@ -184,7 +158,6 @@ const SignUpForm = () => {
                         </button>
                       </form>
                       <div className="mt-4">
-                      {/* <button onClick={handleGoogleLogin}>Google</button> */}
                       </div>
                       <Dialog.Close className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
                         <Cross2Icon />

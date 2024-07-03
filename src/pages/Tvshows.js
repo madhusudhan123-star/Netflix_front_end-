@@ -5,7 +5,13 @@ import YouTube from 'react-youtube';
 import List_cards from '../components/List_cards';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { FaPlay, FaPlus, FaThumbsUp, FaHeart, FaInfoCircle, FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
+import {REACT_APP_MAIN_URL} from '../config';
+import LoadingSpinner from '../components/Loading';
+
+
+
+
 
 const Tvshows = () => {
   const [showIntro, setShowIntro] = useState(false);
@@ -14,12 +20,13 @@ const Tvshows = () => {
   const [genreMovies, setGenreMovies] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [main, setMain] = useState({});
-  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 10) + 1);
   const [trailerkey,setTrailerKey] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
   const [player, setPlayer] = useState(null);
   const [showFullOverview, setShowFullOverview] = useState(false);
-
+  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 10) + 1);
+  const [loading , setLoading] = useState(true);
+  
   const genreMap = {
     action: 28,
     animation: 16,
@@ -51,8 +58,8 @@ const Tvshows = () => {
 
         // Fetch popular and top rated movies/TV shows
         const [popularTVShowsRes, topTVShowsRes] = await Promise.all([
-          axios.get('https://netflix-backend-code.onrender.com/api/tvshow/popular', config),
-          axios.get('https://netflix-backend-code.onrender.com/api/tvshow/top', config),
+          axios.get(`${REACT_APP_MAIN_URL}/tvshow/popular`, config),
+          axios.get(`${REACT_APP_MAIN_URL}/tvshow/top`, config),
         ]);
 
         setPopularTVShows(popularTVShowsRes.data);
@@ -60,7 +67,7 @@ const Tvshows = () => {
 
         // Fetch movies for each genre
         const genrePromises = Object.keys(genreMap).map((genre) =>
-          axios.get(`https://netflix-backend-code.onrender.com/api/tvshow/${genre}`, config)
+          axios.get(`${REACT_APP_MAIN_URL}/tvshow/${genre}`, config)
         );
 
         const genreResponses = await Promise.all(genrePromises);
@@ -83,7 +90,7 @@ const Tvshows = () => {
             }
         };
         const mediaType = main.first_air_date ? 'tv' : 'movie'; // Determine if it's a TV show or movie
-        const res = await axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/${main.id}/trailers`, config);
+        const res = await axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/${main.id}/trailers`, config);
         if (res.data && res.data.length > 0) {
             setTrailerKey(res.data[0].key);
         } else {
@@ -210,6 +217,7 @@ const Tvshows = () => {
   return (
     <div className="bg-black">
       <NavBar />
+      { loading && <LoadingSpinner /> }
       <div className="relative">
         <div className="absolute inset-0 z-0" onClick={handleVideoClick}>
           <YouTube
@@ -259,10 +267,10 @@ const Tvshows = () => {
         </div>
       </div>
       <div className="">
-        <List_cards title="Popular TV Shows" data={popularTVShows} />
-        <List_cards title="Top Rated TV Shows" data={topTVShows} />
+        <List_cards title="Popular TV Shows" setLoading={setLoading} data={popularTVShows} />
+        <List_cards title="Top Rated TV Shows" setLoading={setLoading} data={topTVShows} />
         {Object.entries(genreMovies).map(([genre, movies]) => (
-          <List_cards key={genre} title={`${genre.charAt(0).toUpperCase() + genre.slice(1)} Movies`} data={movies} />
+          <List_cards key={genre} setLoading={setLoading} title={`${genre.charAt(0).toUpperCase() + genre.slice(1)} Movies`} data={movies} />
         ))}
       </div>
       <Footer />

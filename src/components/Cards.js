@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlay, FaPlus, FaThumbsUp, FaHeart, FaInfoCircle } from 'react-icons/fa';
+import { FaPlay, FaHeart, FaInfoCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+
 
 const Cards = ({ data, type }) => {
   const [isHovered, setIsHovered] = useState(false);

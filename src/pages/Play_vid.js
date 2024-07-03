@@ -6,6 +6,10 @@ import { FaCirclePlay } from 'react-icons/fa6';
 import YouTube from 'react-youtube';
 import axios from 'axios';
 import List_cards from '../components/List_cards';
+import {REACT_APP_MAIN_URL} from '../config';
+import LoadingSpinner from '../components/Loading';
+
+
 
 const Play = () => {
     const [generaList, setGeneraList] = useState([]);
@@ -14,8 +18,8 @@ const Play = () => {
     const [popularMovies, setPopularMovies] = useState([]);
     const [topMovies, setTopMovies] = useState([]);
     const location = useLocation();
+    const [loading , setLoading] = useState(true);
     const movieData = location.state?.movieData;
-    console.log(movieData.id);
     const genra_list = {
         28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy",
         80: "Crime", 99: "Documentary", 18: "Drama", 10751: "Family",
@@ -38,8 +42,8 @@ const Play = () => {
           popularMoviesRes,
           topMoviesRes,
         ] = await Promise.all([
-          axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/popular`, config),
-          axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/top`, config)
+          axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/popular`, config),
+          axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/top`, config)
         ]);
 
         setPopularMovies(popularMoviesRes.data);
@@ -82,7 +86,7 @@ const Play = () => {
                 }
             };
             const mediaType = movieData.first_air_date ? 'tv' : 'movie'; // Determine if it's a TV show or movie
-            const res = await axios.get(`https://netflix-backend-code.onrender.com/api/${mediaType}/${movieData.id}/trailers`, config);
+            const res = await axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/${movieData.id}/trailers`, config);
             if (res.data && res.data.length > 0) {
                 setTrailerKey(res.data[0].key); // Use the first trailer
                 setIsPlaying(true);
@@ -102,6 +106,7 @@ const Play = () => {
     return (
         <div className='bg-black min-h-screen'>
             <NavBar />
+            { loading && <LoadingSpinner /> }
             <div className="relative w-full h-screen">
                 {!isPlaying ? (
                     <>
@@ -138,8 +143,8 @@ const Play = () => {
                     )
                 )}
             </div>
-            <List_cards title="Popular Movies" data={popularMovies} />
-            <List_cards title="Top Rated Movies" data={topMovies} />
+            <List_cards setLoading={setLoading} title="Popular Movies" data={popularMovies} />
+            <List_cards setLoading={setLoading} title="Top Rated Movies" data={topMovies} />
             <Footer />
         </div>
     );

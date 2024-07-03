@@ -1,0 +1,1 @@
+export const REACT_APP_MAIN_URL = 'https://netflix-backend-code.onrender.com/api';
