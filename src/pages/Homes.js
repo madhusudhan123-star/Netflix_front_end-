@@ -6,7 +6,6 @@ import List_cards from '../components/List_cards';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
-import {REACT_APP_MAIN_URL} from '../config';
 import { trusted } from 'mongoose';
 import LoadingSpinner from '../components/Loading';
 
@@ -62,10 +61,10 @@ const Homes = () => {
 
         // Fetch popular and top rated movies/TV shows
         const [popularMoviesRes, topMoviesRes, popularTVShowsRes, topTVShowsRes] = await Promise.all([
-          axios.get(`${REACT_APP_MAIN_URL}/movies/popular`, config),
-          axios.get(`${REACT_APP_MAIN_URL}/movies/top`, config),
-          axios.get(`${REACT_APP_MAIN_URL}/tvshow/popular`, config),
-          axios.get(`${REACT_APP_MAIN_URL}/tvshow/top`, config),
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/movies/popular`, config),
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/movies/top`, config),
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/tvshow/popular`, config),
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/tvshow/top`, config),
         ]);
 
         setPopularMovies(popularMoviesRes.data);
@@ -75,7 +74,7 @@ const Homes = () => {
 
         // Fetch movies for each genre
         const genrePromises = Object.keys(genreMap).map((genre) =>
-          axios.get(`${REACT_APP_MAIN_URL}/movies/${genre}`, config)
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/movies/${genre}`, config)
         );
 
         const genreResponses = await Promise.all(genrePromises);
@@ -98,7 +97,7 @@ const Homes = () => {
             }
         };
         const mediaType = main.first_air_date ? 'tv' : 'movie'; // Determine if it's a TV show or movie
-        const res = await axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/${main.id}/trailers`, config);
+        const res = await axios.get(`https://netflix-backend-code-1.onrender.com/api/${mediaType}/${main.id}/trailers`, config);
         if (res.data && res.data.length > 0) {
             setTrailerKey(res.data[0].key);
         } else {

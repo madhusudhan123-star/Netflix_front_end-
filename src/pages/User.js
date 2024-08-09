@@ -4,7 +4,6 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import NavBar from '../components/NavBar';
 import LoadingSpinner from '../components/Loading';
-import {REACT_APP_MAIN_URL} from '../config';
 
 
 
@@ -33,7 +32,7 @@ const ProfileDetails = () => {
         },
       };
       setLoading(true);
-      const response = await axios.get(`${REACT_APP_MAIN_URL}/userdetail`, config);
+      const response = await axios.get(`https://netflix-backend-code-1.onrender.com/api/userdetail`, config);
       setUser(response.data);
       setName(response.data.name);
       setEmail(response.data.email);
@@ -47,7 +46,7 @@ const ProfileDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
-    
+
     if (!name || !email) {
       setErrorMessage('Please fill in all fields');
       return;
@@ -61,7 +60,7 @@ const ProfileDetails = () => {
         },
       };
       setLoading(true);
-      const response = await axios.put(`${REACT_APP_MAIN_URL}/userdetail`, {
+      const response = await axios.put(`https://netflix-backend-code-1.onrender.com/api/userdetail`, {
         name,
         email,
         password,
@@ -81,7 +80,7 @@ const ProfileDetails = () => {
     <div>
       <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center">
         <NavBar />
-        {loading && <LoadingSpinner/>}
+        {loading && <LoadingSpinner />}
         <div className="max-w-md w-full">
           <div className="flex flex-col items-center mb-8 mt-20">
             <h2 className="text-3xl font-bold">{user.name}</h2>

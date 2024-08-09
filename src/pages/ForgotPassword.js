@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {REACT_APP_MAIN_URL} from '../config';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +14,7 @@ const ForgotPassword = () => {
     setLoading(true);
     e.preventDefault();
     try {
-      const response = await axios.post(`${REACT_APP_MAIN_URL}/forgot-password`, { email });
+      const response = await axios.post(`https://netflix-backend-code-1.onrender.com/api/forgot-password`, { email });
       if (response.status === 200) {
         setLoading(false);
         setMessage(response.data.message);

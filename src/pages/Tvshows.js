@@ -6,7 +6,6 @@ import List_cards from '../components/List_cards';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaVolumeUp, FaVolumeMute } from 'react-icons/fa';
-import {REACT_APP_MAIN_URL} from '../config';
 import LoadingSpinner from '../components/Loading';
 
 
@@ -20,13 +19,13 @@ const Tvshows = () => {
   const [genreMovies, setGenreMovies] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [main, setMain] = useState({});
-  const [trailerkey,setTrailerKey] = useState(null);
+  const [trailerkey, setTrailerKey] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
   const [player, setPlayer] = useState(null);
   const [showFullOverview, setShowFullOverview] = useState(false);
   const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 10) + 1);
-  const [loading , setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(true);
+
   const genreMap = {
     action: 28,
     animation: 16,
@@ -58,8 +57,8 @@ const Tvshows = () => {
 
         // Fetch popular and top rated movies/TV shows
         const [popularTVShowsRes, topTVShowsRes] = await Promise.all([
-          axios.get(`${REACT_APP_MAIN_URL}/tvshow/popular`, config),
-          axios.get(`${REACT_APP_MAIN_URL}/tvshow/top`, config),
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/tvshow/popular`, config),
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/tvshow/top`, config),
         ]);
 
         setPopularTVShows(popularTVShowsRes.data);
@@ -67,7 +66,7 @@ const Tvshows = () => {
 
         // Fetch movies for each genre
         const genrePromises = Object.keys(genreMap).map((genre) =>
-          axios.get(`${REACT_APP_MAIN_URL}/tvshow/${genre}`, config)
+          axios.get(`https://netflix-backend-code-1.onrender.com/api/tvshow/${genre}`, config)
         );
 
         const genreResponses = await Promise.all(genrePromises);
@@ -81,30 +80,30 @@ const Tvshows = () => {
         console.error('Error fetching data:', error);
       }
     };
-    const trailer = async() =>{
-        try {
-          const token = localStorage.getItem('token');
+    const trailer = async () => {
+      try {
+        const token = localStorage.getItem('token');
         const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
         };
         const mediaType = main.first_air_date ? 'tv' : 'movie'; // Determine if it's a TV show or movie
-        const res = await axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/${main.id}/trailers`, config);
+        const res = await axios.get(`https://netflix-backend-code-1.onrender.com/api/${mediaType}/${main.id}/trailers`, config);
         if (res.data && res.data.length > 0) {
-            setTrailerKey(res.data[0].key);
+          setTrailerKey(res.data[0].key);
         } else {
-            console.log('No trailer available');
+          console.log('No trailer available');
         }
-    } catch (err) {
-      console.error('Error fetching trailer:', err);
+      } catch (err) {
+        console.error('Error fetching trailer:', err);
+      }
     }
-  }
-  trailer();
-  fetchData();
+    trailer();
+    fetchData();
   }, [genreMap]);
 
-  
+
   const videoOptions = {
     height: '100%',
     width: '100%',
@@ -217,7 +216,7 @@ const Tvshows = () => {
   return (
     <div className="bg-black">
       <NavBar />
-      { loading && <LoadingSpinner /> }
+      {loading && <LoadingSpinner />}
       <div className="relative">
         <div className="absolute inset-0 z-0" onClick={handleVideoClick}>
           <YouTube
@@ -248,15 +247,15 @@ const Tvshows = () => {
             </div>
             <div className="flex space-x-4">
               <button className="bg-white text-black p-2 rounded-full hover:bg-opacity-80">
-                <Link 
-                  to="/Play" 
+                <Link
+                  to="/Play"
                   state={{ movieData: main }}
                   className="flex items-center justify-center w-full h-full"
                 >
                   <span className='text-bold p-1 text-lg'>Play Movie</span>
                 </Link>
               </button>
-              <button 
+              <button
                 className="bg-gray-600 text-white p-2 rounded-full hover:bg-opacity-80"
                 onClick={toggleMute}
               >

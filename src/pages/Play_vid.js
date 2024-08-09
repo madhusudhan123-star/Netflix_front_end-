@@ -6,7 +6,7 @@ import { FaCirclePlay } from 'react-icons/fa6';
 import YouTube from 'react-youtube';
 import axios from 'axios';
 import List_cards from '../components/List_cards';
-import {REACT_APP_MAIN_URL} from '../config';
+
 import LoadingSpinner from '../components/Loading';
 
 
@@ -18,7 +18,7 @@ const Play = () => {
     const [popularMovies, setPopularMovies] = useState([]);
     const [topMovies, setTopMovies] = useState([]);
     const location = useLocation();
-    const [loading , setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const movieData = location.state?.movieData;
     const genra_list = {
         28: "Action", 12: "Adventure", 16: "Animation", 35: "Comedy",
@@ -27,34 +27,34 @@ const Play = () => {
         9648: "Mystery", 10749: "Romance", 878: "Science Fiction",
         10770: "TV Movie", 53: "Thriller", 10752: "War", 37: "Western",
     };
-    useEffect(() =>  window.scrollTo(0, 0), []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        const mediaType = movieData.first_air_date ? 'tvshow' : 'movies';
-        const [
-          popularMoviesRes,
-          topMoviesRes,
-        ] = await Promise.all([
-          axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/popular`, config),
-          axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/top`, config)
-        ]);
+    useEffect(() => window.scrollTo(0, 0), []);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                };
+                const mediaType = movieData.first_air_date ? 'tvshow' : 'movies';
+                const [
+                    popularMoviesRes,
+                    topMoviesRes,
+                ] = await Promise.all([
+                    axios.get(`https://netflix-backend-code-1.onrender.com/api/${mediaType}/popular`, config),
+                    axios.get(`https://netflix-backend-code-1.onrender.com/api/${mediaType}/top`, config)
+                ]);
 
-        setPopularMovies(popularMoviesRes.data);
-        setTopMovies(topMoviesRes.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    
-    fetchData();
-  }, []);
+                setPopularMovies(popularMoviesRes.data);
+                setTopMovies(topMoviesRes.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
         if (movieData) {
@@ -86,7 +86,7 @@ const Play = () => {
                 }
             };
             const mediaType = movieData.first_air_date ? 'tv' : 'movie'; // Determine if it's a TV show or movie
-            const res = await axios.get(`${REACT_APP_MAIN_URL}/${mediaType}/${movieData.id}/trailers`, config);
+            const res = await axios.get(`https://netflix-backend-code-1.onrender.com/api/${mediaType}/${movieData.id}/trailers`, config);
             if (res.data && res.data.length > 0) {
                 setTrailerKey(res.data[0].key); // Use the first trailer
                 setIsPlaying(true);
@@ -106,7 +106,7 @@ const Play = () => {
     return (
         <div className='bg-black min-h-screen'>
             <NavBar />
-            { loading && <LoadingSpinner /> }
+            {loading && <LoadingSpinner />}
             <div className="relative w-full h-screen">
                 {!isPlaying ? (
                     <>

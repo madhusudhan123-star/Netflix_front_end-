@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingSpinner from '../../components/Loading';
-import {REACT_APP_MAIN_URL} from '../../config';
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('');
@@ -39,12 +38,12 @@ const SignUpForm = () => {
     try {
       // Make a POST request to the backend endpoint
       // https://netflix-backend-code.onrender.com
-      const response = await axios.post(`${REACT_APP_MAIN_URL}/register`, {
+      const response = await axios.post(`https://netflix-backend-code-1.onrender.com/api/register`, {
         name,
         email,
         password,
       });
-// http://localhost:3000/home/signup
+      // http://localhost:3000/home/signup
       // Handle successful registration
       setIsOpen(false); // Close the dialog on successful submission
       if (response.status === 200) {
@@ -53,7 +52,7 @@ const SignUpForm = () => {
             navigate('/login'); // Use a function body to navigate
           }
         });
-      }else{
+      } else {
         toast.error(response.data.message);
       }
     } catch (error) {
@@ -64,7 +63,7 @@ const SignUpForm = () => {
   };
   return (
     <div className='bg-black'>
-     {loading && <LoadingSpinner />} {/* Show loading spinner if loading */}
+      {loading && <LoadingSpinner />} {/* Show loading spinner if loading */}
       <div
         style={{ height: '100vh' }}
         className="text-white bg-black bg-[url('https://assets.nflxext.com/ffe/siteui/vlv3/51c1d7f7-3179-4a55-93d9-704722898999/be90e543-c951-40d0-9ef5-e067f3e33d16/IN-en-20240610-popsignuptwoweeks-perspective_alpha_website_medium.jpg')]"
@@ -182,8 +181,8 @@ const SignUpForm = () => {
               </p>
             </div>
             <div className="flex space-x-4">
-            <div className="flex flex-wrap justify-center space-x-4">
-    </div>
+              <div className="flex flex-wrap justify-center space-x-4">
+              </div>
               <a href="https://help.netflix.com/support/412" className="text-gray-400 underline mb-2">FAQ</a>
               <a href="https://www.netflix.com/cookiePreferences" className="text-gray-400 underline mb-2">Cookie Preferences</a>
             </div>

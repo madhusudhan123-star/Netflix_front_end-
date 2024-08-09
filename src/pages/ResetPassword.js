@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {REACT_APP_MAIN_URL} from '../config';
 import axios from 'axios';
 import LoadingSpinner from '../components/Loading';
 const ResetPassword = () => {
-  const  token  = useParams();
+  const token = useParams();
   const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [addcss, setAddcss] = useState('');
@@ -13,10 +12,10 @@ const ResetPassword = () => {
     setLoading(true)
     e.preventDefault();
     try {
-      const response = await axios.post(`${REACT_APP_MAIN_URL}/reset-password/${token.id}`,{ newPassword});
-      if(response.status == 200){
+      const response = await axios.post(`https://netflix-backend-code-1.onrender.com/api/reset-password/${token.id}`, { newPassword });
+      if (response.status == 200) {
         setLoading(false)
-        setMessage( "Your Password has been reset, Please close the tab")
+        setMessage("Your Password has been reset, Please close the tab")
         setAddcss('hidden');
       }
     } catch (error) {
@@ -28,7 +27,7 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      {loading && <LoadingSpinner/>}
+      {loading && <LoadingSpinner />}
       <div className="w-full max-w-md bg-gray-800 p-8 rounded-md">
         <h1 className="text-3xl mb-4">Reset Password</h1>
         <form onSubmit={handleSubmit}>
